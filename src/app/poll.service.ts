@@ -19,4 +19,9 @@ export class PollService {
         return this.http.get<Poll[]>(this.baseUrl);
     }
 
+    vote(pollId: number, optionIndex: number) {
+        console.log("the poll id is: ", pollId);
+        return this.http.post(`${this.baseUrl}/vote`, { id: pollId, optionIndex });
+    }
+
 }
