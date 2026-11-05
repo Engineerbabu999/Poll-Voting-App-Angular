@@ -20,7 +20,6 @@ export class PollService {
     }
 
     vote(pollId: number, optionIndex: number) {
-        console.log("the poll id is: ", pollId);
         return this.http.post(`${this.baseUrl}/vote`, { id: pollId, optionIndex });
     }
 
