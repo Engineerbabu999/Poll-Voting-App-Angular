@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Poll } from './poll/poll';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Poll],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
