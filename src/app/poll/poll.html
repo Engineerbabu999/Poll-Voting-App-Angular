@@ -1,1 +1,133 @@
-<p>poll works..!</p>
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Polls Dashboard</h2>
+            <p class="text-secondary mb-0">
+                Explore polls and share your opinion.
+            </p>
+        </div>
+
+        <span class="badge text-bg-primary rounded-pill px-3 py-2">
+            {{ polls.length }} Polls
+        </span>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-secondary mb-2">Total Polls</p>
+                    <h3 class="fw-bold mb-0">{{ polls.length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <p class="text-secondary mb-2">Total Votes</p>
+                    <h3 class="fw-bold mb-0">{{ getAllVotes() }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Polls -->
+    <h4 class="fw-bold mb-3">Available Polls</h4>
+
+    <div class="row g-4">
+
+        @for (poll of polls; track poll.id) {
+        <div class="col-12 col-lg-6">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <!-- Question -->
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="text-primary small fw-semibold">
+                                POLL #{{ poll.id }}
+                            </span>
+
+                            <h5 class="fw-bold mt-2 mb-0">
+                                {{ poll.question }}
+                            </h5>
+                        </div>
+
+                        <span class="badge bg-light text-dark border rounded-pill">
+                            {{ getTotalVotes(poll) }} Votes
+                        </span>
+                    </div>
+
+                    <hr class="opacity-25">
+
+                    <!-- Options -->
+                    <div class="d-flex flex-column gap-3">
+
+                        @for (option of poll.options; track $index) {
+                        <div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-medium">
+                                    {{ option.voteOption }}
+                                </span>
+
+                                <span class="text-secondary small">
+                                    {{ option.voteCount }} votes
+                                </span>
+                            </div>
+
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                    [style.width.%]="getVotePercentage(option.voteCount, poll)">
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                (click)="vote(poll.id, $index)">
+                                Vote
+                            </button>
+
+                        </div>
+                        }
+
+                    </div>
+
+                    <hr class="opacity-25 mt-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-secondary small">
+                            {{ poll.options.length }} Options
+                        </span>
+
+                        <span class="text-success small fw-semibold">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Live Results
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        } @empty {
+
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body text-center py-5">
+                    <h5 class="fw-bold">No polls available</h5>
+                    <p class="text-secondary mb-0">
+                        There are no polls available at the moment.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        }
+
+    </div>
+</div>

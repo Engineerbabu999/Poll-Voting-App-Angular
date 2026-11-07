@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { Poll } from './poll/poll';
 
 @Component({
-  imports: [RouterOutlet, Poll],
+  imports: [Poll],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
