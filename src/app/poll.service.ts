@@ -11,8 +11,8 @@ export class PollService {
 
     constructor(private http: HttpClient) { }
 
-    createPoll(poll: Poll) {
-        return this.http.post<Poll>(this.baseUrl, poll);
+    createPoll(poll: Omit<Poll, 'id'>) {
+        return this.http.post<Poll>(this.baseUrl, { ...poll, id: null });
     }
 
     getAllPolls() {

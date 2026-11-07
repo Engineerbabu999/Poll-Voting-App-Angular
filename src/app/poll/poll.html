@@ -5,7 +5,7 @@
         <div>
             <h2 class="fw-bold mb-1">Polls Dashboard</h2>
             <p class="text-secondary mb-0">
-                Explore polls and share your opinion.
+                Create polls and share your opinions.
             </p>
         </div>
 
@@ -14,8 +14,78 @@
         </span>
     </div>
 
+    <!-- Create Poll Form -->
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-1">Create a New Poll</h4>
+            <p class="text-secondary mb-4">
+                Add a question and provide options for people to vote on.
+            </p>
+
+            <form (ngSubmit)="createPoll()">
+
+                <!-- Question -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Poll Question
+                    </label>
+
+                    <input type="text" class="form-control form-control-lg" name="question" [(ngModel)]="newQuestion"
+                        placeholder="e.g. What is your favourite sport?" required>
+                </div>
+
+                <!-- Options -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Poll Options
+                    </label>
+
+                    @for (option of newOptions; track $index) {
+                    <div class="input-group mb-3">
+
+                        <span class="input-group-text bg-light">
+                            {{ $index + 1 }}
+                        </span>
+
+                        <input type="text" class="form-control" [name]="'option-' + $index"
+                            [(ngModel)]="newOptions[$index]" placeholder="Enter an option">
+
+                        <button type="button" class="btn btn-outline-danger" (click)="removeOption($index)"
+                            [disabled]="newOptions.length <= 2">
+                            <i class="bi bi-trash"></i>
+                        </button>
+
+                    </div>
+                    }
+                </div>
+
+                <!-- Add Option -->
+                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill mb-4" (click)="addOption()">
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Add Another Option
+                </button>
+
+                <!-- Submit -->
+                <div>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4" [disabled]="isSubmitting">
+                        @if (isSubmitting) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Creating...
+                        } @else {
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Create Poll
+                        }
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
     <!-- Statistics -->
     <div class="row g-3 mb-4">
+
         <div class="col-md-6">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
@@ -33,9 +103,10 @@
                 </div>
             </div>
         </div>
+
     </div>
 
-    <!-- Polls -->
+    <!-- Poll List -->
     <h4 class="fw-bold mb-3">Available Polls</h4>
 
     <div class="row g-4">
@@ -83,13 +154,17 @@
 
                             <div class="progress mb-2" style="height: 8px;">
                                 <div class="progress-bar bg-primary" role="progressbar"
-                                    [style.width.%]="getVotePercentage(option.voteCount, poll)">
-                                </div>
+                                    [style.width.%]="getVotePercentage(option.voteCount, poll)"></div>
                             </div>
 
                             <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
-                                (click)="vote(poll.id, $index)">
+                                [disabled]="votingPollId === poll.id" (click)="vote(poll.id, $index)">
+                                @if (votingPollId === poll.id) {
+                                <span class="spinner-border spinner-border-sm me-1"></span>
+                                Voting...
+                                } @else {
                                 Vote
+                                }
                             </button>
 
                         </div>
@@ -121,7 +196,7 @@
                 <div class="card-body text-center py-5">
                     <h5 class="fw-bold">No polls available</h5>
                     <p class="text-secondary mb-0">
-                        There are no polls available at the moment.
+                        Create your first poll using the form above.
                     </p>
                 </div>
             </div>
@@ -130,4 +205,5 @@
         }
 
     </div>
+
 </div>
